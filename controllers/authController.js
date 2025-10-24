@@ -25,7 +25,7 @@ export const register = async (req, res) => {
     const { email, password, name, provider, providerId, picture } = req.body;
 
     // Check if user already exists
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ where: { email } });
 
     if (userExists) {
       return res.status(400).json({
@@ -49,7 +49,7 @@ export const register = async (req, res) => {
       res.status(201).json({
         success: true,
         data: {
-          _id: user._id,
+          _id: user.id,
           name: user.name,
           email: user.email,
           provider: user.provider,
@@ -57,7 +57,7 @@ export const register = async (req, res) => {
           isFirstLogin: user.isFirstLogin,
           hasCompletedOnboarding: user.hasCompletedOnboarding,
           plan: user.plan,
-          token: generateToken(user._id)
+          token: generateToken(user.id)
         }
       });
     } else {
@@ -84,7 +84,7 @@ export const login = async (req, res) => {
 
     // If OAuth login, find or create user
     if (provider && provider !== 'email') {
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ where: { email } });
 
       if (!user) {
         // Create new OAuth user
@@ -101,7 +101,7 @@ export const login = async (req, res) => {
       return res.json({
         success: true,
         data: {
-          _id: user._id,
+          _id: user.id,
           name: user.name,
           email: user.email,
           provider: user.provider,
@@ -111,19 +111,19 @@ export const login = async (req, res) => {
           companyDetailsCompleted: user.companyDetailsCompleted,
           serviceDetailsCompleted: user.serviceDetailsCompleted,
           plan: user.plan,
-          token: generateToken(user._id)
+          token: generateToken(user.id)
         }
       });
     }
 
     // Email/Password login
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
 
     if (user && (await user.comparePassword(password))) {
       res.json({
         success: true,
         data: {
-          _id: user._id,
+          _id: user.id,
           name: user.name,
           email: user.email,
           provider: user.provider,
@@ -133,7 +133,7 @@ export const login = async (req, res) => {
           companyDetailsCompleted: user.companyDetailsCompleted,
           serviceDetailsCompleted: user.serviceDetailsCompleted,
           plan: user.plan,
-          token: generateToken(user._id)
+          token: generateToken(user.id)
         }
       });
     } else {
@@ -197,7 +197,7 @@ export const updateOnboarding = async (req, res) => {
     res.json({
       success: true,
       data: {
-        _id: user._id,
+        _id: user.id,
         name: user.name,
         email: user.email,
         isFirstLogin: user.isFirstLogin,

@@ -10,15 +10,11 @@ export const createOrUpdateCompany = async (req, res) => {
     const companyData = req.body;
 
     // Check if company already exists for this user
-    let company = await Company.findOne({ userId });
+    let company = await Company.findOne({ where: { userId } });
 
     if (company) {
       // Update existing company
-      company = await Company.findOneAndUpdate(
-        { userId },
-        { ...companyData, userId },
-        { new: true, runValidators: true }
-      );
+      await company.update({ ...companyData, userId });
     } else {
       // Create new company
       company = await Company.create({
@@ -27,9 +23,7 @@ export const createOrUpdateCompany = async (req, res) => {
       });
 
       // Update user's company details status
-      await User.findByIdAndUpdate(userId, {
-        companyDetailsCompleted: true
-      });
+      await User.update({ companyDetailsCompleted: true }, { where: { id: userId } });
     }
 
     res.status(200).json({
@@ -52,7 +46,7 @@ export const getCompany = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const company = await Company.findOne({ userId });
+    const company = await Company.findOne({ where: { userId } });
 
     if (!company) {
       return res.status(404).json({
@@ -81,7 +75,7 @@ export const deleteCompany = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const company = await Company.findOneAndDelete({ userId });
+    const company = await Company.findOne({ where: { userId } });
 
     if (!company) {
       return res.status(404).json({
@@ -90,10 +84,11 @@ export const deleteCompany = async (req, res) => {
       });
     }
 
+    // Delete the company
+    await company.destroy();
+
     // Update user's company details status
-    await User.findByIdAndUpdate(userId, {
-      companyDetailsCompleted: false
-    });
+    await User.update({ companyDetailsCompleted: false }, { where: { id: userId } });
 
     res.json({
       success: true,

@@ -3,7 +3,8 @@ import {
   getUserProfile,
   updateUserProfile,
   changePassword,
-  updateUserPlan
+  updateUserPlan,
+  upload
 } from '../controllers/userController.js';
 import { protect } from '../middleware/auth.js';
 
@@ -11,7 +12,7 @@ const router = express.Router();
 
 router.route('/profile')
   .get(protect, getUserProfile)
-  .put(protect, updateUserProfile);
+  .put(protect, upload.single('profileImage'), updateUserProfile);
 
 router.put('/password', protect, changePassword);
 router.put('/plan', protect, updateUserPlan);

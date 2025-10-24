@@ -1,12 +1,48 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+
+// Configure multer for image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = 'uploads/profile/';
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'profile-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only image files are allowed!'), false);
+    }
+  }
+});
+
+export { upload };
 
 // @desc    Get user profile
 // @route   GET /api/user/profile
 // @access  Private
 export const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findByPk(req.user.id, {
+      attributes: { exclude: ['password'] }
+    });
 
     if (!user) {
       return res.status(404).json({
@@ -33,7 +69,7 @@ export const getUserProfile = async (req, res) => {
 // @access  Private
 export const updateUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findByPk(req.user.id);
 
     if (!user) {
       return res.status(404).json({
@@ -42,19 +78,24 @@ export const updateUserProfile = async (req, res) => {
       });
     }
 
-    const { name, email, picture } = req.body;
+    const { name, email } = req.body;
+    const updateData = {};
 
     // Update fields
-    if (name) user.name = name;
-    if (email) user.email = email;
-    if (picture) user.picture = picture;
+    if (name) updateData.name = name;
+    if (email) updateData.email = email;
 
-    const updatedUser = await user.save();
+    // Handle image upload
+    if (req.file) {
+      updateData.picture = `https://value-aim-backend.onrender.com/uploads/profile/${req.file.filename}`;
+    }
+
+    const updatedUser = await user.update(updateData);
 
     res.json({
       success: true,
       data: {
-        _id: updatedUser._id,
+        id: updatedUser.id,
         name: updatedUser.name,
         email: updatedUser.email,
         picture: updatedUser.picture,
@@ -77,7 +118,7 @@ export const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
 
-    const user = await User.findById(req.user.id);
+    const user = await User.findByPk(req.user.id);
 
     if (!user) {
       return res.status(404).json({
@@ -105,8 +146,7 @@ export const changePassword = async (req, res) => {
     }
 
     // Update password
-    user.password = newPassword;
-    await user.save();
+    await user.update({ password: newPassword });
 
     res.json({
       success: true,
@@ -135,15 +175,25 @@ export const updateUserPlan = async (req, res) => {
       });
     }
 
-    const user = await User.findByIdAndUpdate(
-      req.user.id,
-      { plan },
-      { new: true }
-    ).select('-password');
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    await user.update({ plan });
 
     res.json({
       success: true,
-      data: user
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        picture: user.picture,
+        plan: user.plan
+      }
     });
   } catch (error) {
     console.error('Update plan error:', error);

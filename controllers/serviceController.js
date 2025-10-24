@@ -15,9 +15,7 @@ export const createService = async (req, res) => {
     });
 
     // Update user's service details status
-    await User.findByIdAndUpdate(userId, {
-      serviceDetailsCompleted: true
-    });
+    await User.update({ serviceDetailsCompleted: true }, { where: { id: userId } });
 
     res.status(201).json({
       success: true,
@@ -60,7 +58,7 @@ export const getServices = async (req, res) => {
 // @access  Private
 export const getService = async (req, res) => {
   try {
-    const service = await Service.findById(req.params.id);
+    const service = await Service.findByPk(req.params.id);
 
     if (!service) {
       return res.status(404).json({
@@ -95,7 +93,7 @@ export const getService = async (req, res) => {
 // @access  Private
 export const updateService = async (req, res) => {
   try {
-    let service = await Service.findById(req.params.id);
+    let service = await Service.findByPk(req.params.id);
 
     if (!service) {
       return res.status(404).json({
@@ -112,11 +110,7 @@ export const updateService = async (req, res) => {
       });
     }
 
-    service = await Service.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    await service.update(req.body);
 
     res.json({
       success: true,
@@ -136,7 +130,7 @@ export const updateService = async (req, res) => {
 // @access  Private
 export const deleteService = async (req, res) => {
   try {
-    const service = await Service.findById(req.params.id);
+    const service = await Service.findByPk(req.params.id);
 
     if (!service) {
       return res.status(404).json({
@@ -153,7 +147,7 @@ export const deleteService = async (req, res) => {
       });
     }
 
-    await Service.findByIdAndDelete(req.params.id);
+    await service.destroy();
 
     res.json({
       success: true,
@@ -190,15 +184,13 @@ export const bulkCreateServices = async (req, res) => {
     }));
 
     // Delete all existing services for this user
-    await Service.deleteMany({ userId });
+    await Service.destroy({ where: { userId } });
 
     // Create new services
-    const createdServices = await Service.insertMany(servicesWithUserId);
+    const createdServices = await Service.bulkCreate(servicesWithUserId);
 
     // Update user's service details status
-    await User.findByIdAndUpdate(userId, {
-      serviceDetailsCompleted: true
-    });
+    await User.update({ serviceDetailsCompleted: true }, { where: { id: userId } });
 
     res.status(201).json({
       success: true,

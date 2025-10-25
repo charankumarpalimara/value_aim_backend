@@ -103,10 +103,15 @@ export const updateUserProfile = async (req, res) => {
 
     // Handle image upload
     if (req.file) {
-      // Use dynamic URL based on the request host
-      const protocol = req.protocol;
-      const host = req.get('host');
-      updateData.picture = `${protocol}://${host}/uploads/profile/${req.file.filename}`;
+      // Use hosted URL for production, dynamic URL for development
+      const isProduction = process.env.NODE_ENV === 'production';
+      if (isProduction) {
+        updateData.picture = `https://value-aim-backend.onrender.com/uploads/profile/${req.file.filename}`;
+      } else {
+        const protocol = req.protocol;
+        const host = req.get('host');
+        updateData.picture = `${protocol}://${host}/uploads/profile/${req.file.filename}`;
+      }
       console.log('Image URL created:', updateData.picture);
     }
 

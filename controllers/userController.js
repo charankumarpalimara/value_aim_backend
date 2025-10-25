@@ -69,9 +69,25 @@ export const getUserProfile = async (req, res) => {
 // @access  Private
 export const updateUserProfile = async (req, res) => {
   try {
+    console.log('=== USER PROFILE UPDATE REQUEST ===');
+    console.log('User ID:', req.user.id);
+    console.log('Request method:', req.method);
+    console.log('Content-Type:', req.get('content-type'));
+    console.log('Body data (name, email):', {
+      name: req.body.name,
+      email: req.body.email
+    });
+    console.log('File uploaded:', req.file ? {
+      filename: req.file.filename,
+      mimetype: req.file.mimetype,
+      size: req.file.size
+    } : 'No file');
+    console.log('All form fields:', Object.keys(req.body));
+
     const user = await User.findByPk(req.user.id);
 
     if (!user) {
+      console.log('User not found with ID:', req.user.id);
       return res.status(404).json({
         success: false,
         message: 'User not found'
@@ -87,10 +103,23 @@ export const updateUserProfile = async (req, res) => {
 
     // Handle image upload
     if (req.file) {
-      updateData.picture = `https://value-aim-backend.onrender.com/uploads/profile/${req.file.filename}`;
+      // Use dynamic URL based on the request host
+      const protocol = req.protocol;
+      const host = req.get('host');
+      updateData.picture = `${protocol}://${host}/uploads/profile/${req.file.filename}`;
+      console.log('Image URL created:', updateData.picture);
     }
 
+    console.log('Update data to be applied:', updateData);
+    
     const updatedUser = await user.update(updateData);
+
+    console.log('User updated successfully:', {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      picture: updatedUser.picture
+    });
 
     res.json({
       success: true,

@@ -34,6 +34,11 @@ export const register = async (req, res) => {
       });
     }
 
+    console.log('=== REGISTER USER ===');
+    console.log('Email:', email);
+    console.log('Provider:', provider);
+    console.log('Picture:', picture);
+    
     // Create user
     const user = await User.create({
       name,
@@ -41,9 +46,11 @@ export const register = async (req, res) => {
       password: provider === 'email' ? password : undefined,
       provider: provider || 'email',
       providerId,
-      picture,
+      picture, // Save the picture URL (Google image or other OAuth provider)
       isFirstLogin: true
     });
+
+    console.log('User created with picture:', user.picture);
 
     if (user) {
       res.status(201).json({
@@ -84,18 +91,38 @@ export const login = async (req, res) => {
 
     // If OAuth login, find or create user
     if (provider && provider !== 'email') {
+      console.log('=== OAUTH LOGIN ===');
+      console.log('Provider:', provider);
+      console.log('Email:', email);
+      console.log('Picture:', picture);
+      
       let user = await User.findOne({ where: { email } });
 
       if (!user) {
+        console.log('Creating new OAuth user');
         // Create new OAuth user
         user = await User.create({
           email,
           name,
           provider,
           providerId,
-          picture,
+          picture, // Save the Google image URL
           isFirstLogin: true
         });
+        console.log('User created with picture:', user.picture);
+      } else {
+        console.log('Existing user found');
+        console.log('Current user picture:', user.picture);
+        console.log('New picture provided:', picture);
+        
+        // Update picture only if user doesn't have one and new picture is provided
+        if (!user.picture && picture) {
+          console.log('Updating empty picture with new picture');
+          await user.update({ picture });
+          user.picture = picture;
+        } else if (user.picture) {
+          console.log('User already has a picture, keeping existing one');
+        }
       }
 
       return res.json({

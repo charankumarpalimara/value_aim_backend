@@ -10,19 +10,24 @@ const storeOTP = async (email, otp, purpose = 'login') => {
     console.log('Storing OTP:', { email, otp, purpose, expiresAt });
     
     // Delete any existing OTP for this email and purpose
-    await OTP.destroy({
+    const deletedCount = await OTP.destroy({
       where: { email, purpose }
     });
+    console.log('Deleted', deletedCount, 'existing OTP records');
 
     // Insert new OTP
     const otpRecord = await OTP.create({
       email,
-      otp,
+      otp: otp.toString(), // Ensure OTP is stored as string
       purpose,
       expires_at: expiresAt
     });
 
-    console.log('OTP stored successfully:', { id: otpRecord.id, email, otp, purpose });
+    console.log('OTP stored successfully:', { id: otpRecord.id, email, otp: otpRecord.otp, purpose });
+    
+    // Verify it was stored correctly
+    const verifyRecord = await OTP.findOne({ where: { id: otpRecord.id } });
+    console.log('Verification - stored OTP in database:', verifyRecord ? verifyRecord.otp : 'not found');
     return true;
   } catch (error) {
     console.error('Error storing OTP:', error);
@@ -33,7 +38,8 @@ const storeOTP = async (email, otp, purpose = 'login') => {
 // Verify OTP
 const verifyOTPCode = async (email, otp, purpose = 'login') => {
   try {
-    console.log('Verifying OTP:', { email, otp, purpose });
+    const otpString = otp.toString(); // Ensure OTP is string for comparison
+    console.log('Verifying OTP:', { email, otp: otpString, purpose });
     
     // First check if any OTP exists for this email
     const allOtps = await OTP.findAll({
@@ -44,7 +50,7 @@ const verifyOTPCode = async (email, otp, purpose = 'login') => {
     const otpRecord = await OTP.findOne({
       where: {
         email,
-        otp,
+        otp: otpString,
         purpose,
         expires_at: { [Op.gt]: new Date() },
         used: false

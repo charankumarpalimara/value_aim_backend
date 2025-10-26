@@ -16,14 +16,34 @@ connectDB();
 
 // Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://valueaim.com',
-    'https://www.valueaim.com',
-    process.env.FRONTEND_URL
-  ].filter(Boolean), // Remove any undefined values
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      'https://valueaim.com',
+      'https://www.valueaim.com',
+      'https://value-qf4dvoxa3-charans-projects-445c3774.vercel.app',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin is allowed or matches Vercel pattern
+    if (allowedOrigins.includes(origin) || origin.includes('.vercel.app')) {
+      return callback(null, true);
+    }
+    
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true
 }));
+
+// Add COOP header for OAuth
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

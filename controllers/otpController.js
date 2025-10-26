@@ -7,19 +7,22 @@ const storeOTP = async (email, otp, purpose = 'login') => {
   const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
   
   try {
+    console.log('Storing OTP:', { email, otp, purpose, expiresAt });
+    
     // Delete any existing OTP for this email and purpose
     await OTP.destroy({
       where: { email, purpose }
     });
 
     // Insert new OTP
-    await OTP.create({
+    const otpRecord = await OTP.create({
       email,
       otp,
       purpose,
       expires_at: expiresAt
     });
 
+    console.log('OTP stored successfully:', { id: otpRecord.id, email, otp, purpose });
     return true;
   } catch (error) {
     console.error('Error storing OTP:', error);
@@ -30,6 +33,14 @@ const storeOTP = async (email, otp, purpose = 'login') => {
 // Verify OTP
 const verifyOTPCode = async (email, otp, purpose = 'login') => {
   try {
+    console.log('Verifying OTP:', { email, otp, purpose });
+    
+    // First check if any OTP exists for this email
+    const allOtps = await OTP.findAll({
+      where: { email, purpose }
+    });
+    console.log('All OTPs in database for', email, ':', allOtps.map(o => ({ id: o.id, otp: o.otp, used: o.used, expires_at: o.expires_at })));
+    
     const otpRecord = await OTP.findOne({
       where: {
         email,
@@ -40,12 +51,16 @@ const verifyOTPCode = async (email, otp, purpose = 'login') => {
       }
     });
 
+    console.log('OTP record found:', otpRecord ? { id: otpRecord.id, otp: otpRecord.otp } : 'null');
+
     if (!otpRecord) {
+      console.log('OTP verification failed - record not found or expired/used');
       return { valid: false, message: 'Invalid or expired OTP' };
     }
 
     // Mark OTP as used
     await otpRecord.update({ used: true });
+    console.log('OTP verified successfully');
 
     return { valid: true };
   } catch (error) {

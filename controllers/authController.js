@@ -87,7 +87,7 @@ export const register = async (req, res) => {
 // @access  Public
 export const login = async (req, res) => {
   try {
-    const { email, password, provider, providerId, name, picture } = req.body;
+    const { email, password, provider, providerId, name, picture, otpVerified } = req.body;
 
     // If OAuth login, find or create user
     if (provider && provider !== 'email') {
@@ -145,6 +145,33 @@ export const login = async (req, res) => {
 
     // Email/Password login
     const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password'
+      });
+    }
+
+    // If OTP verified, allow login without password
+    if (otpVerified && !password) {
+      return res.json({
+        success: true,
+        data: {
+          _id: user.id,
+          name: user.name,
+          email: user.email,
+          provider: user.provider,
+          picture: user.picture,
+          isFirstLogin: user.isFirstLogin,
+          hasCompletedOnboarding: user.hasCompletedOnboarding,
+          companyDetailsCompleted: user.companyDetailsCompleted,
+          serviceDetailsCompleted: user.serviceDetailsCompleted,
+          plan: user.plan,
+          token: generateToken(user.id)
+        }
+      });
+    }
 
     if (user && (await user.comparePassword(password))) {
       res.json({

@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { register, login, getMe, updateOnboarding } from '../controllers/authController.js';
+import { register, login, getMe, updateOnboarding, checkEmail } from '../controllers/authController.js';
 import { sendOTP, verifyOTP } from '../controllers/otpController.js';
 import { protect } from '../middleware/auth.js';
 
@@ -21,6 +21,7 @@ const loginValidation = [
 
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
+router.post('/check-email', checkEmail);
 router.get('/me', protect, getMe);
 router.put('/onboarding', protect, updateOnboarding);
 

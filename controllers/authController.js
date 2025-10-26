@@ -205,6 +205,35 @@ export const login = async (req, res) => {
   }
 };
 
+// @desc    Check if email exists
+// @route   POST /api/auth/check-email
+// @access  Public
+export const checkEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Email is required'
+      });
+    }
+
+    const user = await User.findOne({ where: { email } });
+
+    res.json({
+      success: true,
+      exists: !!user
+    });
+  } catch (error) {
+    console.error('Check email error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during email check'
+    });
+  }
+};
+
 // @desc    Get current logged in user
 // @route   GET /api/auth/me
 // @access  Private

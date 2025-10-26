@@ -68,11 +68,13 @@ export const sendOTP = async (req, res) => {
 
     // Generate and store OTP
     const otp = generateOTP();
+    console.log('Generated OTP for', email, ':', otp);
+    
     await storeOTP(email, otp, purpose);
 
-    // Send OTP email
+    // Send OTP email with the same OTP
     const emailType = purpose === 'signup' || purpose === 'accountCreation' ? 'accountCreation' : 'loginVerification';
-    await sendOTPEmail(email, emailType);
+    await sendOTPEmail(email, emailType, otp);
 
     res.status(200).json({
       success: true,

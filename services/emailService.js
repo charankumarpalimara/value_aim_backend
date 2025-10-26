@@ -106,14 +106,17 @@ const generateOTP = () => {
 };
 
 // Send OTP email
-export const sendOTPEmail = async (email, type = 'loginVerification') => {
+export const sendOTPEmail = async (email, type = 'loginVerification', otpCode) => {
   try {
-    const otp = generateOTP();
+    // Use provided OTP or generate new one
+    const otp = otpCode || generateOTP();
     const template = templates[type];
     
     if (!template) {
       throw new Error(`Invalid email template type: ${type}`);
     }
+
+    console.log('Sending OTP email with code:', otp, 'to:', email);
 
     const emailData = {
       sender: { 

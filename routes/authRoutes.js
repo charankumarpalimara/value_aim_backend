@@ -1,6 +1,7 @@
 import express from 'express';
 import { body } from 'express-validator';
 import { register, login, getMe, updateOnboarding } from '../controllers/authController.js';
+import { sendOTP, verifyOTP } from '../controllers/otpController.js';
 import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -22,6 +23,10 @@ router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
 router.get('/me', protect, getMe);
 router.put('/onboarding', protect, updateOnboarding);
+
+// OTP routes
+router.post('/otp/send', sendOTP);
+router.post('/otp/verify', verifyOTP);
 
 export default router;
 

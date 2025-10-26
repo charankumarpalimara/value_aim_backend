@@ -60,16 +60,32 @@ CREATE TABLE IF NOT EXISTS services (
     INDEX idx_offer_status (offerStatus)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 4. Create Indexes for better performance
+-- 4. Create OTPs Table
+CREATE TABLE IF NOT EXISTS otps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    otp VARCHAR(10) NOT NULL,
+    purpose ENUM('login', 'signup', 'accountCreation', 'resetPassword') DEFAULT 'login',
+    expires_at TIMESTAMP NOT NULL,
+    used BOOLEAN DEFAULT false,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_email (email),
+    INDEX idx_otp (otp),
+    INDEX idx_expires_at (expires_at),
+    INDEX idx_used (used)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 5. Create Indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_provider ON users(provider);
 CREATE INDEX IF NOT EXISTS idx_companies_user_id ON companies(userId);
 CREATE INDEX IF NOT EXISTS idx_services_user_id ON services(userId);
 
--- 5. Show created tables
+-- 6. Show created tables
 SHOW TABLES;
 
--- 6. Show table structures
+-- 7. Show table structures
 DESCRIBE users;
 DESCRIBE companies;
 DESCRIBE services;
+DESCRIBE otps;

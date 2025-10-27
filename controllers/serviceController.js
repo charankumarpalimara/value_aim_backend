@@ -96,9 +96,12 @@ export const getService = async (req, res) => {
 // @access  Private
 export const updateService = async (req, res) => {
   try {
+    console.log('Update service request:', { id: req.params.id, body: req.body, userId: req.user.id });
+    
     let service = await Service.findByPk(req.params.id);
 
     if (!service) {
+      console.log('Service not found:', req.params.id);
       return res.status(404).json({
         success: false,
         message: 'Service not found'
@@ -107,13 +110,16 @@ export const updateService = async (req, res) => {
 
     // Make sure user owns this service
     if (service.userId.toString() !== req.user.id) {
+      console.log('User not authorized:', { serviceUserId: service.userId, reqUserId: req.user.id });
       return res.status(403).json({
         success: false,
         message: 'Not authorized to update this service'
       });
     }
 
+    console.log('Updating service with data:', req.body);
     await service.update(req.body);
+    console.log('Service updated successfully');
 
     res.json({
       success: true,

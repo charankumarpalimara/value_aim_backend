@@ -109,8 +109,8 @@ export const updateService = async (req, res) => {
     }
 
     // Make sure user owns this service
-    if (service.userId.toString() !== req.user.id) {
-      console.log('User not authorized:', { serviceUserId: service.userId, reqUserId: req.user.id });
+    if (service.userId.toString() !== req.user.id.toString()) {
+      console.log('User not authorized:', { serviceUserId: service.userId, reqUserId: req.user.id, types: { serviceUserIdType: typeof service.userId, reqUserIdType: typeof req.user.id } });
       return res.status(403).json({
         success: false,
         message: 'Not authorized to update this service'

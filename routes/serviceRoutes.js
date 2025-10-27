@@ -5,7 +5,8 @@ import {
   getService,
   updateService,
   deleteService,
-  bulkCreateServices
+  bulkCreateServices,
+  deleteAllServices
 } from '../controllers/serviceController.js';
 import { protect } from '../middleware/auth.js';
 
@@ -16,6 +17,7 @@ router.route('/')
   .get(protect, getServices);
 
 router.post('/bulk', protect, bulkCreateServices);
+router.delete('/all', protect, deleteAllServices);
 
 router.route('/:id')
   .get(protect, getService)

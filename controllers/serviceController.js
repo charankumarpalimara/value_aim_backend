@@ -37,7 +37,10 @@ export const getServices = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const services = await Service.find({ userId }).sort({ createdAt: -1 });
+    const services = await Service.findAll({ 
+      where: { userId },
+      order: [['createdAt', 'DESC']]
+    });
 
     res.json({
       success: true,
@@ -202,6 +205,28 @@ export const bulkCreateServices = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Server error while creating services'
+    });
+  }
+};
+
+// @desc    Delete all services for a user
+// @route   DELETE /api/service/all
+// @access  Private
+export const deleteAllServices = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const deletedCount = await Service.destroy({ where: { userId } });
+
+    res.json({
+      success: true,
+      message: `Deleted ${deletedCount} services successfully`
+    });
+  } catch (error) {
+    console.error('Delete all services error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error while deleting all services'
     });
   }
 };

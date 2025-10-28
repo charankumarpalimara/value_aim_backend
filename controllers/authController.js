@@ -5,7 +5,7 @@ import { validationResult } from 'express-validator';
 // Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret_key', {
-    expiresIn: '30d'
+    expiresIn: '7d' // Token expires after 7 days (1 week)
   });
 };
 

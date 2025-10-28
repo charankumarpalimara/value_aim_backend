@@ -25,7 +25,8 @@ const otpVerifyValidation = [
   body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be exactly 6 digits')
 ];
 
-router.post('/register', upload.single('profileImage'), registerValidation, register);
+// Note: Multer must come first to parse FormData, then validation can access req.body
+router.post('/register', upload.single('profileImage'), register);
 router.post('/login', loginValidation, login);
 router.post('/check-email', checkEmail);
 router.get('/me', protect, getMe);

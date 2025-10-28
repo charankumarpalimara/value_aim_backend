@@ -3,6 +3,7 @@ import { body } from 'express-validator';
 import { register, login, getMe, updateOnboarding, checkEmail } from '../controllers/authController.js';
 import { sendOTP, verifyOTP } from '../controllers/otpController.js';
 import { protect } from '../middleware/auth.js';
+import { upload } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -24,7 +25,7 @@ const otpVerifyValidation = [
   body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be exactly 6 digits')
 ];
 
-router.post('/register', registerValidation, register);
+router.post('/register', upload.single('profileImage'), registerValidation, register);
 router.post('/login', loginValidation, login);
 router.post('/check-email', checkEmail);
 router.get('/me', protect, getMe);

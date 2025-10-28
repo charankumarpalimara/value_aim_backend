@@ -37,9 +37,25 @@ export const register = async (req, res) => {
     console.log('=== REGISTER USER ===');
     console.log('Email:', email);
     console.log('Provider:', provider);
-    console.log('Picture:', picture);
+    console.log('Picture from body:', picture);
     console.log('FirstName:', firstName);
     console.log('LastName:', lastName);
+    console.log('File uploaded:', req.file ? req.file.filename : 'No file');
+    
+    // Determine picture URL (from file upload or OAuth provider)
+    let pictureUrl = picture; // Default to OAuth picture if provided
+    if (req.file) {
+      // Use hosted URL for production, dynamic URL for development
+      const isProduction = process.env.NODE_ENV === 'production';
+      if (isProduction) {
+        pictureUrl = `https://value-aim-backend.onrender.com/uploads/profile/${req.file.filename}`;
+      } else {
+        const protocol = req.protocol;
+        const host = req.get('host');
+        pictureUrl = `${protocol}://${host}/uploads/profile/${req.file.filename}`;
+      }
+      console.log('Profile image URL created:', pictureUrl);
+    }
     
     // Create user
     const user = await User.create({
@@ -50,7 +66,7 @@ export const register = async (req, res) => {
       password: provider === 'email' ? password : undefined,
       provider: provider || 'email',
       providerId,
-      picture, // Save the picture URL (Google image or other OAuth provider)
+      picture: pictureUrl,
       isFirstLogin: true
     });
 

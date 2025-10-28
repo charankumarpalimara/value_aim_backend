@@ -73,8 +73,9 @@ export const updateUserProfile = async (req, res) => {
     console.log('User ID:', req.user.id);
     console.log('Request method:', req.method);
     console.log('Content-Type:', req.get('content-type'));
-    console.log('Body data (name, email):', {
-      name: req.body.name,
+    console.log('Body data:', {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       email: req.body.email
     });
     console.log('File uploaded:', req.file ? {
@@ -94,12 +95,22 @@ export const updateUserProfile = async (req, res) => {
       });
     }
 
-    const { name, email } = req.body;
+    const { firstName, lastName, email } = req.body;
     const updateData = {};
 
     // Update fields
-    if (name) updateData.name = name;
+    if (firstName) updateData.firstName = firstName;
+    if (lastName) updateData.lastName = lastName;
     if (email) updateData.email = email;
+    
+    // Update name field to maintain backward compatibility
+    if (firstName && lastName) {
+      updateData.name = `${firstName} ${lastName}`;
+    } else if (firstName) {
+      updateData.name = firstName;
+    } else if (lastName) {
+      updateData.name = lastName;
+    }
 
     // Handle image upload
     if (req.file) {
@@ -122,6 +133,8 @@ export const updateUserProfile = async (req, res) => {
     console.log('User updated successfully:', {
       id: updatedUser.id,
       name: updatedUser.name,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
       email: updatedUser.email,
       picture: updatedUser.picture
     });
@@ -131,9 +144,12 @@ export const updateUserProfile = async (req, res) => {
       data: {
         id: updatedUser.id,
         name: updatedUser.name,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
         email: updatedUser.email,
         picture: updatedUser.picture,
-        plan: updatedUser.plan
+        plan: updatedUser.plan,
+        provider: updatedUser.provider
       }
     });
   } catch (error) {
@@ -224,9 +240,12 @@ export const updateUserPlan = async (req, res) => {
       data: {
         id: user.id,
         name: user.name,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         picture: user.picture,
-        plan: user.plan
+        plan: user.plan,
+        provider: user.provider
       }
     });
   } catch (error) {

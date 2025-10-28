@@ -23,7 +23,9 @@ app.use(cors({
       'https://valueaim.com',
       'https://www.valueaim.com',
       'https://value-qf4dvoxa3-charans-projects-445c3774.vercel.app',
-      process.env.FRONTEND_URL
+      process.env.FRONTEND_URL,
+      // Add your production Vercel URL here after deployment
+      // Example: 'https://your-app-name.vercel.app'
     ].filter(Boolean);
     
     // Allow requests with no origin (like mobile apps or curl requests)

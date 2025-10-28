@@ -1,6 +1,7 @@
 import { sendOTPEmail, generateOTP } from '../services/emailService.js';
 import OTP from '../models/OTP.js';
 import { Op } from 'sequelize';
+import { validationResult } from 'express-validator';
 
 // Store OTP in database with expiration
 const storeOTP = async (email, otp, purpose = 'login') => {
@@ -113,14 +114,16 @@ export const sendOTP = async (req, res) => {
 // Verify OTP
 export const verifyOTP = async (req, res) => {
   try {
-    const { email, otp, purpose = 'login' } = req.body;
-
-    if (!email || !otp) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
       return res.status(400).json({
         success: false,
-        message: 'Email and OTP are required'
+        message: 'Validation failed',
+        errors: errors.array()
       });
     }
+
+    const { email, otp, purpose = 'login' } = req.body;
 
     const result = await verifyOTPCode(email, otp, purpose);
 

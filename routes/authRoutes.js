@@ -19,6 +19,11 @@ const loginValidation = [
   body('email').isEmail().withMessage('Please provide a valid email')
 ];
 
+const otpVerifyValidation = [
+  body('email').isEmail().withMessage('Please provide a valid email'),
+  body('otp').isLength({ min: 6, max: 6 }).withMessage('OTP must be exactly 6 digits')
+];
+
 router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
 router.post('/check-email', checkEmail);
@@ -27,7 +32,7 @@ router.put('/onboarding', protect, updateOnboarding);
 
 // OTP routes
 router.post('/otp/send', sendOTP);
-router.post('/otp/verify', verifyOTP);
+router.post('/otp/verify', otpVerifyValidation, verifyOTP);
 
 export default router;
 

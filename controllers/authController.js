@@ -22,7 +22,7 @@ export const register = async (req, res) => {
       });
     }
 
-    const { email, password, name, provider, providerId, picture } = req.body;
+    const { email, password, name, firstName, lastName, provider, providerId, picture } = req.body;
 
     // Check if user already exists
     const userExists = await User.findOne({ where: { email } });
@@ -38,10 +38,14 @@ export const register = async (req, res) => {
     console.log('Email:', email);
     console.log('Provider:', provider);
     console.log('Picture:', picture);
+    console.log('FirstName:', firstName);
+    console.log('LastName:', lastName);
     
     // Create user
     const user = await User.create({
-      name,
+      name: name || (firstName && lastName ? `${firstName} ${lastName}` : undefined),
+      firstName,
+      lastName,
       email,
       password: provider === 'email' ? password : undefined,
       provider: provider || 'email',
@@ -58,6 +62,8 @@ export const register = async (req, res) => {
         data: {
           _id: user.id,
           name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           provider: user.provider,
           picture: user.picture,
@@ -87,7 +93,7 @@ export const register = async (req, res) => {
 // @access  Public
 export const login = async (req, res) => {
   try {
-    const { email, password, provider, providerId, name, picture, otpVerified } = req.body;
+    const { email, password, provider, providerId, name, firstName, lastName, picture, otpVerified } = req.body;
 
     // If OAuth login, find or create user
     if (provider && provider !== 'email') {
@@ -103,7 +109,9 @@ export const login = async (req, res) => {
         // Create new OAuth user
         user = await User.create({
           email,
-          name,
+          name: name || (firstName && lastName ? `${firstName} ${lastName}` : undefined),
+          firstName,
+          lastName,
           provider,
           providerId,
           picture, // Save the Google image URL
@@ -130,6 +138,8 @@ export const login = async (req, res) => {
         data: {
           _id: user.id,
           name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           provider: user.provider,
           picture: user.picture,
@@ -160,6 +170,8 @@ export const login = async (req, res) => {
         data: {
           _id: user.id,
           name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           provider: user.provider,
           picture: user.picture,
@@ -179,6 +191,8 @@ export const login = async (req, res) => {
         data: {
           _id: user.id,
           name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
           email: user.email,
           provider: user.provider,
           picture: user.picture,

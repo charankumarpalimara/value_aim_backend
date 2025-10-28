@@ -71,7 +71,7 @@ export const getService = async (req, res) => {
     }
 
     // Make sure user owns this service
-    if (service.userId.toString() !== req.user.id) {
+    if (service.userId.toString() !== req.user.id.toString()) {
       return res.status(403).json({
         success: false,
         message: 'Not authorized to access this service'
@@ -149,7 +149,7 @@ export const deleteService = async (req, res) => {
     }
 
     // Make sure user owns this service
-    if (service.userId.toString() !== req.user.id) {
+    if (service.userId.toString() !== req.user.id.toString()) {
       return res.status(403).json({
         success: false,
         message: 'Not authorized to delete this service'

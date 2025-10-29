@@ -10,6 +10,7 @@ const Contact = sequelize.define('Contact', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: true, // Optional - user might not be logged in
+    field: 'user_id',
     references: {
       model: 'users',
       key: 'id'
@@ -18,11 +19,13 @@ const Contact = sequelize.define('Contact', {
   },
   firstName: {
     type: DataTypes.STRING(100),
-    allowNull: false
+    allowNull: false,
+    field: 'first_name'
   },
   lastName: {
     type: DataTypes.STRING(100),
-    allowNull: false
+    allowNull: false,
+    field: 'last_name'
   },
   email: {
     type: DataTypes.STRING(255),
@@ -33,7 +36,8 @@ const Contact = sequelize.define('Contact', {
   },
   phoneNumber: {
     type: DataTypes.STRING(20),
-    allowNull: false
+    allowNull: false,
+    field: 'phone_number'
   },
   subject: {
     type: DataTypes.STRING(255),
@@ -49,19 +53,23 @@ const Contact = sequelize.define('Contact', {
   },
   adminNotes: {
     type: DataTypes.TEXT,
-    allowNull: true
+    allowNull: true,
+    field: 'admin_notes'
   },
   createdAt: {
     type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
+    defaultValue: DataTypes.NOW,
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
+    defaultValue: DataTypes.NOW,
+    field: 'updated_at'
   }
 }, {
   tableName: 'contacts',
-  timestamps: true
+  timestamps: true,
+  underscored: true
 });
 
 export default Contact;

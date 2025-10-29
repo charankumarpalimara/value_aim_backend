@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js';
 import companyRoutes from './routes/companyRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import suggestionRoutes from './routes/suggestionRoutes.js';
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/company', companyRoutes);
 app.use('/api/service', serviceRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/suggestions', suggestionRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -1,6 +1,7 @@
 import User from './User.js';
 import Company from './Company.js';
 import Service from './Service.js';
+import Suggestion from './Suggestion.js';
 
 // Define associations
 User.hasOne(Company, {
@@ -23,4 +24,14 @@ Service.belongsTo(User, {
   as: 'user'
 });
 
-export { User, Company, Service };
+User.hasMany(Suggestion, {
+  foreignKey: 'userId',
+  as: 'suggestions'
+});
+
+Suggestion.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user'
+});
+
+export { User, Company, Service, Suggestion };

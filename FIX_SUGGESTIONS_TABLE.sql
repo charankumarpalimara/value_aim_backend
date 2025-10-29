@@ -1,10 +1,13 @@
--- Value Aim Suggestions Table Creation Script
+-- Fix Suggestions Table Column Names
+-- This script drops the old table and creates it with correct snake_case column names
 -- Database: value_aim
--- Run this command in your MySQL database
 
 USE value_aim;
 
--- Create Suggestions Table (with snake_case columns to match Sequelize underscored: true)
+-- Drop the existing table (if you don't have important data in it)
+DROP TABLE IF EXISTS suggestions;
+
+-- Create Suggestions Table with correct snake_case columns
 CREATE TABLE IF NOT EXISTS suggestions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -22,6 +25,8 @@ CREATE TABLE IF NOT EXISTS suggestions (
     INDEX idx_created_at (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Show table structure
+-- Verify the table structure
 DESCRIBE suggestions;
+
+SELECT 'Suggestions table fixed successfully!' as status;
 

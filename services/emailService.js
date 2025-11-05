@@ -410,7 +410,7 @@ export const sendSuggestionNotification = async (suggestionData, userData) => {
             <p style="margin-top: 8px; font-size: 12px;">This is an automated notification from your ValueAIM platform</p>
             <div class="footer-links">
               <a href="https://valueaim.com">Visit Website</a> •
-              <a href="mailto:charanpalimara@gmail.com">Contact Support</a>
+              <a href="mailto:info@valueaim.com">Contact Support</a>
             </div>
           </div>
         </div>
@@ -423,7 +423,7 @@ export const sendSuggestionNotification = async (suggestionData, userData) => {
         name: 'ValueAIM Suggestions', 
         email: 'no_reply@valueaim.com' 
       },
-      to: [{ email: 'charanpalimara@gmail.com' }],
+      to: [{ email: 'info@valueaim.com' }],
       subject: `New Suggestion from ${name}`,
       htmlContent: htmlContent
     };
@@ -732,7 +732,7 @@ export const sendContactNotification = async (contactData) => {
             <p style="margin-top: 8px; font-size: 12px;">This is an automated notification from your ValueAIM platform</p>
             <div class="footer-links">
               <a href="https://valueaim.com">Visit Website</a> •
-              <a href="mailto:charanpalimara@gmail.com">Contact Support</a>
+              <a href="mailto:info@valueaim.com">Contact Support</a>
             </div>
           </div>
         </div>
@@ -745,7 +745,7 @@ export const sendContactNotification = async (contactData) => {
         name: 'ValueAIM Contact Form', 
         email: 'no_reply@valueaim.com' 
       },
-      to: [{ email: 'charanpalimara@gmail.com' }],
+      to: [{ email: 'info@valueaim.com' }],
       replyTo: { email: email, name: `${firstName} ${lastName}` },
       subject: `Contact Form: ${subject}`,
       htmlContent: htmlContent

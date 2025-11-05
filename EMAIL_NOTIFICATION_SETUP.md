@@ -5,7 +5,7 @@ Email notifications have been implemented for:
 1. **Suggestions** (from UnifiedPopup.jsx)
 2. **Contact Form** (from ContactUs.jsx)
 
-Both will send emails to: **charanpalimara@gmail.com**
+Both will send emails to: **info@valueaim.com**
 
 ---
 
@@ -70,7 +70,7 @@ SENDINBLUE_API_KEY=your_brevo_api_key_here
 The system uses **Brevo** (formerly SendinBlue) for sending emails.
 - API endpoint: `https://api.brevo.com/v3/smtp/email`
 - Sender email: `no_reply@valueaim.com`
-- Recipient: `charanpalimara@gmail.com`
+- Recipient: `info@valueaim.com`
 
 ---
 
@@ -98,13 +98,13 @@ The system uses **Brevo** (formerly SendinBlue) for sending emails.
 2. Go to Profile menu → Suggestions
 3. Type a suggestion or attach a file
 4. Click "Send Suggestion"
-5. Check charanpalimara@gmail.com for email
+5. Check info@valueaim.com for email
 
 ### Test Contact Form Email:
 1. Go to Contact Us page (or open from profile menu)
 2. Fill in all fields
 3. Click Submit
-4. Check charanpalimara@gmail.com for email
+4. Check info@valueaim.com for email
 
 ---
 
@@ -123,7 +123,7 @@ The system uses **Brevo** (formerly SendinBlue) for sending emails.
 1. Check `SENDINBLUE_API_KEY` is set in `.env`
 2. Check server console logs for email errors
 3. Verify Brevo account is active and has sending quota
-4. Check spam folder in charanpalimara@gmail.com
+4. Check spam folder in info@valueaim.com
 
 ### Check Logs:
 Look for these messages in server console:

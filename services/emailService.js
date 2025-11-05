@@ -159,4 +159,190 @@ export const sendOTPEmail = async (email, type = 'loginVerification', otpCode) =
   }
 };
 
+// Send suggestion notification email to admin
+export const sendSuggestionNotification = async (suggestionData, userData) => {
+  try {
+    const { suggestion, attachmentName, attachmentSize } = suggestionData;
+    const { name, email } = userData;
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #201F47 0%, #15143a 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .info-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #201F47; }
+          .label { font-weight: bold; color: #201F47; margin-bottom: 5px; }
+          .value { color: #666; margin-bottom: 15px; }
+          .suggestion-text { background: #f0f0f0; padding: 15px; border-radius: 8px; margin: 15px 0; font-style: italic; }
+          .footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>📝 New Suggestion Received</h1>
+          </div>
+          <div class="content">
+            <div class="info-box">
+              <div class="label">From:</div>
+              <div class="value">${name} (${email})</div>
+              
+              <div class="label">Suggestion:</div>
+              <div class="suggestion-text">${suggestion || 'No text - file attachment only'}</div>
+              
+              ${attachmentName ? `
+                <div class="label">Attachment:</div>
+                <div class="value">
+                  📎 ${attachmentName} (${(attachmentSize / 1024 / 1024).toFixed(2)} MB)
+                </div>
+              ` : ''}
+              
+              <div class="label">Submitted At:</div>
+              <div class="value">${new Date().toLocaleString()}</div>
+            </div>
+          </div>
+          <div class="footer">
+            <p>&copy; 2024 ValueAIM. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const emailData = {
+      sender: { 
+        name: 'ValueAIM Suggestions', 
+        email: 'no_reply@valueaim.com' 
+      },
+      to: [{ email: 'charanpalimara@gmail.com' }],
+      subject: `New Suggestion from ${name}`,
+      htmlContent: htmlContent
+    };
+
+    const response = await fetch(SENDINBLUE_API_URL, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': SENDINBLUE_API_KEY,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(emailData)
+    });
+
+    const responseData = await response.json();
+    
+    if (response.ok) {
+      console.log('Suggestion notification email sent successfully:', responseData);
+      return {
+        success: true,
+        messageId: responseData.messageId
+      };
+    } else {
+      throw new Error(`Failed to send email: ${responseData.message || 'Unknown error'}`);
+    }
+  } catch (error) {
+    console.error('Error sending suggestion notification email:', error);
+    throw error;
+  }
+};
+
+// Send contact form notification email to admin
+export const sendContactNotification = async (contactData) => {
+  try {
+    const { firstName, lastName, email, phoneNumber, subject, message } = contactData;
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background: linear-gradient(135deg, #201F47 0%, #15143a 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+          .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
+          .info-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #201F47; }
+          .label { font-weight: bold; color: #201F47; margin-bottom: 5px; }
+          .value { color: #666; margin-bottom: 15px; }
+          .message-text { background: #f0f0f0; padding: 15px; border-radius: 8px; margin: 15px 0; white-space: pre-wrap; }
+          .footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>📧 New Contact Form Submission</h1>
+          </div>
+          <div class="content">
+            <div class="info-box">
+              <div class="label">Name:</div>
+              <div class="value">${firstName} ${lastName}</div>
+              
+              <div class="label">Email:</div>
+              <div class="value">${email}</div>
+              
+              <div class="label">Phone:</div>
+              <div class="value">${phoneNumber}</div>
+              
+              <div class="label">Subject:</div>
+              <div class="value">${subject}</div>
+              
+              <div class="label">Message:</div>
+              <div class="message-text">${message}</div>
+              
+              <div class="label">Submitted At:</div>
+              <div class="value">${new Date().toLocaleString()}</div>
+            </div>
+          </div>
+          <div class="footer">
+            <p>&copy; 2024 ValueAIM. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const emailData = {
+      sender: { 
+        name: 'ValueAIM Contact Form', 
+        email: 'no_reply@valueaim.com' 
+      },
+      to: [{ email: 'charanpalimara@gmail.com' }],
+      replyTo: { email: email, name: `${firstName} ${lastName}` },
+      subject: `Contact Form: ${subject}`,
+      htmlContent: htmlContent
+    };
+
+    const response = await fetch(SENDINBLUE_API_URL, {
+      method: 'POST',
+      headers: {
+        'accept': 'application/json',
+        'api-key': SENDINBLUE_API_KEY,
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(emailData)
+    });
+
+    const responseData = await response.json();
+    
+    if (response.ok) {
+      console.log('Contact notification email sent successfully:', responseData);
+      return {
+        success: true,
+        messageId: responseData.messageId
+      };
+    } else {
+      throw new Error(`Failed to send email: ${responseData.message || 'Unknown error'}`);
+    }
+  } catch (error) {
+    console.error('Error sending contact notification email:', error);
+    throw error;
+  }
+};
+
 export { generateOTP };

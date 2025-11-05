@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { sendSuggestionNotification } from '../services/emailService.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -67,6 +68,31 @@ export const createSuggestion = async (req, res) => {
     };
 
     const createdSuggestion = await Suggestion.create(suggestionData);
+
+    // Send email notification to admin (non-blocking - don't wait for it)
+    try {
+      const user = await User.findByPk(userId);
+      if (user) {
+        // Send email in background - don't block the response
+        sendSuggestionNotification(
+          {
+            suggestion: suggestion || '',
+            attachmentName: file?.originalname,
+            attachmentSize: file?.size
+          },
+          {
+            name: user.name || `${user.firstName} ${user.lastName}`,
+            email: user.email
+          }
+        ).catch(error => {
+          // Log error but don't fail the request
+          console.error('Failed to send suggestion notification email:', error);
+        });
+      }
+    } catch (emailError) {
+      // Log error but don't fail the request
+      console.error('Error preparing suggestion notification email:', emailError);
+    }
 
     res.status(201).json({
       success: true,

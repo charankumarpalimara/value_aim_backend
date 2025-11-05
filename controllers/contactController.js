@@ -1,6 +1,7 @@
 import Contact from '../models/Contact.js';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
+import { sendContactNotification } from '../services/emailService.js';
 
 // Helper function to optionally get user from token
 const getOptionalUser = async (req) => {
@@ -59,8 +60,24 @@ export const createContact = async (req, res) => {
 
     const contact = await Contact.create(contactData);
 
-    // Optionally send email notification to admin (you can implement this later)
-    // await sendContactNotificationEmail(contact);
+    // Send email notification to admin (non-blocking - don't wait for it)
+    try {
+      // Send email in background - don't block the response
+      sendContactNotification({
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+        email: contact.email,
+        phoneNumber: contact.phoneNumber,
+        subject: contact.subject,
+        message: contact.message
+      }).catch(error => {
+        // Log error but don't fail the request
+        console.error('Failed to send contact notification email:', error);
+      });
+    } catch (emailError) {
+      // Log error but don't fail the request
+      console.error('Error preparing contact notification email:', emailError);
+    }
 
     res.status(201).json({
       success: true,

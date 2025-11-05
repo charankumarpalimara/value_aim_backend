@@ -175,242 +175,303 @@ export const sendSuggestionNotification = async (suggestionData, userData) => {
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6; 
-            color: #333;
-            background: #f5f7fa;
-            padding: 20px;
+            background: #f6f8fa;
+            margin: 0;
+            padding: 0;
           }
-          .email-wrapper { 
-            max-width: 650px; 
-            margin: 0 auto; 
+          .email-container { 
+            max-width: 600px; 
+            margin: 40px auto; 
             background: #ffffff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(32, 31, 71, 0.12);
+            border: 1px solid #e1e4e8;
           }
-          .header { 
-            background: linear-gradient(135deg, #201F47 0%, #15143a 100%);
-            color: white; 
-            padding: 48px 40px;
+          .logo-header { 
+            padding: 32px 40px;
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
             text-align: center;
           }
-          .header-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
+          .logo-img {
+            height: 60px;
+            width: auto;
           }
-          .header h1 { 
-            font-size: 28px; 
+          .logo-title {
+            font-size: 24px;
             font-weight: 700;
-            margin: 0;
+            color: #201F47;
             letter-spacing: -0.5px;
           }
-          .header p {
-            margin: 12px 0 0 0;
-            opacity: 0.9;
+          .hero-section {
+            padding: 40px 40px 32px 40px;
+            background: #ffffff;
+          }
+          .notification-badge {
+            display: inline-block;
+            background: #201F47;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 20px;
+          }
+          .hero-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #24292e;
+            margin-bottom: 12px;
+            line-height: 1.3;
+          }
+          .hero-subtitle {
             font-size: 15px;
+            color: #586069;
+            line-height: 1.5;
           }
-          .content { 
-            padding: 40px;
+          .content-section {
+            padding: 0 40px 32px 40px;
+            background: #ffffff;
           }
-          .info-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 24px;
+          .info-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-bottom: 24px;
           }
           .info-row {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e1e4e8;
           }
           .info-row:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
             border-bottom: none;
           }
-          .label { 
-            font-weight: 600;
-            color: #201F47;
+          .info-label {
+            padding: 16px 0;
             font-size: 13px;
+            font-weight: 600;
+            color: #586069;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            width: 140px;
+            vertical-align: top;
           }
-          .value { 
-            color: #4b5563;
+          .info-value {
+            padding: 16px 0;
             font-size: 15px;
+            color: #24292e;
             line-height: 1.6;
           }
-          .user-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-          }
-          .suggestion-box {
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-left: 4px solid #201F47;
-            padding: 20px;
-            border-radius: 10px;
-            font-size: 15px;
-            line-height: 1.8;
-            color: #374151;
-            font-style: italic;
-          }
-          .attachment-box {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            border: 2px solid #fbbf24;
-            padding: 16px 20px;
-            border-radius: 10px;
+          .user-info {
             display: flex;
             align-items: center;
             gap: 12px;
           }
-          .attachment-icon {
+          .user-avatar {
             width: 40px;
             height: 40px;
-            background: white;
-            border-radius: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #201F47 0%, #15143a 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
           }
-          .attachment-info {
+          .user-details {
             flex: 1;
           }
-          .attachment-name {
+          .user-name {
+            font-weight: 600;
+            color: #24292e;
+            font-size: 15px;
+          }
+          .user-email {
+            font-size: 14px;
+            color: #586069;
+          }
+          .suggestion-content {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #24292e;
+          }
+          .attachment-card {
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            border-radius: 6px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+          }
+          .attachment-icon-box {
+            width: 44px;
+            height: 44px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+          }
+          .attachment-icon-svg {
+            width: 24px;
+            height: 24px;
+            color: #f59e0b;
+          }
+          .attachment-details {
+            flex: 1;
+            min-width: 0;
+          }
+          .attachment-filename {
             font-weight: 600;
             color: #92400e;
-            margin-bottom: 4px;
+            font-size: 14px;
+            margin-bottom: 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
-          .attachment-size {
+          .attachment-filesize {
             font-size: 13px;
             color: #b45309;
           }
-          .timestamp-box {
-            background: #e0e7ff;
-            padding: 12px 16px;
-            border-radius: 8px;
-            text-align: center;
-          }
-          .timestamp {
-            color: #3730a3;
-            font-weight: 500;
+          .timestamp-text {
             font-size: 14px;
+            color: #586069;
           }
-          .footer { 
-            text-align: center;
+          .divider {
+            height: 1px;
+            background: #e1e4e8;
+            margin: 32px 0;
+          }
+          .footer {
             padding: 32px 40px;
-            background: #f8f9fa;
-            color: #6b7280;
+            background: #f6f8fa;
+            text-align: center;
+            border-top: 1px solid #e1e4e8;
+          }
+          .footer-text {
             font-size: 13px;
-            border-top: 1px solid #e5e7eb;
+            color: #586069;
+            line-height: 1.6;
+          }
+          .footer-brand {
+            font-weight: 600;
+            color: #201F47;
           }
           .footer-links {
             margin-top: 16px;
+            font-size: 13px;
           }
-          .footer-links a {
+          .footer-link {
             color: #201F47;
             text-decoration: none;
-            margin: 0 8px;
             font-weight: 500;
+            margin: 0 10px;
+          }
+          .footer-link:hover {
+            text-decoration: underline;
           }
           @media only screen and (max-width: 600px) {
-            .header { padding: 32px 24px; }
-            .content { padding: 24px; }
+            .email-container { margin: 20px auto; }
+            .logo-header { padding: 24px; }
+            .hero-section { padding: 32px 24px 24px 24px; }
+            .content-section { padding: 0 24px 24px 24px; }
             .footer { padding: 24px; }
-            .header h1 { font-size: 24px; }
+            .info-label { display: block; width: 100%; padding-bottom: 4px; }
+            .info-value { display: block; padding-top: 4px; }
           }
         </style>
       </head>
       <body>
-        <div class="email-wrapper">
-          <div class="header">
-            <div class="header-icon">💡</div>
-            <h1>New Suggestion Received!</h1>
-            <p>A user has shared valuable feedback</p>
+        <div class="email-container">
+          <div class="logo-header">
+            <img src="https://value-aim-backend.onrender.com/uploads/valueaim-logo.png" alt="ValueAIM" class="logo-img" />
           </div>
           
-          <div class="content">
-            <div class="info-card">
-              <div class="info-row">
-                <div class="label">
-                  <span>👤</span> FROM
-                </div>
-                <div class="user-badge">
-                  <span style="font-size: 20px;">👨‍💼</span>
-                  <div>
-                    <div style="font-weight: 600;">${name}</div>
-                    <div style="font-size: 13px; opacity: 0.9;">${email}</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="info-row">
-                <div class="label">
-                  <span>📝</span> SUGGESTION
-                </div>
-                <div class="suggestion-box">
-                  ${suggestion || 'No text provided - Please check attachment'}
-                </div>
-              </div>
-              
-              ${attachmentName ? `
-                <div class="info-row">
-                  <div class="label">
-                    <span>📎</span> ATTACHMENT
-                  </div>
-                  <div class="attachment-box">
-                    <div class="attachment-icon">📄</div>
-                    <div class="attachment-info">
-                      <div class="attachment-name">${attachmentName}</div>
-                      <div class="attachment-size">File Size: ${(attachmentSize / 1024 / 1024).toFixed(2)} MB</div>
+          <div class="hero-section">
+            <div class="notification-badge">New Submission</div>
+            <h1 class="hero-title">User Suggestion Received</h1>
+            <p class="hero-subtitle">A user has submitted feedback through your platform</p>
+          </div>
+          
+          <div class="content-section">
+            <table class="info-table">
+              <tr class="info-row">
+                <td class="info-label">Submitted By</td>
+                <td class="info-value">
+                  <div class="user-info">
+                    <div class="user-avatar">${name.charAt(0).toUpperCase()}</div>
+                    <div class="user-details">
+                      <div class="user-name">${name}</div>
+                      <div class="user-email">${email}</div>
                     </div>
                   </div>
-                </div>
+                </td>
+              </tr>
+              
+              <tr class="info-row">
+                <td class="info-label">Suggestion</td>
+                <td class="info-value">
+                  <div class="suggestion-content">
+                    ${suggestion || 'No text provided — See attachment below'}
+                  </div>
+                </td>
+              </tr>
+              
+              ${attachmentName ? `
+                <tr class="info-row">
+                  <td class="info-label">Attachment</td>
+                  <td class="info-value">
+                    <div class="attachment-card">
+                      <div class="attachment-icon-box">
+                        <svg class="attachment-icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                      </div>
+                      <div class="attachment-details">
+                        <div class="attachment-filename">${attachmentName}</div>
+                        <div class="attachment-filesize">${(attachmentSize / 1024 / 1024).toFixed(2)} MB</div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
               ` : ''}
               
-              <div class="info-row">
-                <div class="label">
-                  <span>🕐</span> SUBMITTED
-                </div>
-                <div class="timestamp-box">
-                  <div class="timestamp">${new Date().toLocaleString('en-US', { 
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    timeZoneName: 'short'
-                  })}</div>
-                </div>
-              </div>
-            </div>
+              <tr class="info-row">
+                <td class="info-label">Date & Time</td>
+                <td class="info-value">
+                  <div class="timestamp-text">
+                    ${new Date().toLocaleString('en-US', { 
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      timeZoneName: 'short'
+                    })}
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
           
           <div class="footer">
-            <p><strong>ValueAIM</strong> - Amplifying Customer Intelligence</p>
-            <p style="margin-top: 8px; font-size: 12px;">This is an automated notification from your ValueAIM platform</p>
+            <p class="footer-text">
+              <span class="footer-brand">ValueAIM</span> — Amplifying Customer Intelligence
+            </p>
+            <p class="footer-text" style="margin-top: 8px; font-size: 12px; color: #959da5;">
+              This is an automated notification from your ValueAIM platform
+            </p>
             <div class="footer-links">
-              <a href="https://valueaim.com">Visit Website</a> •
-              <a href="mailto:info@valueaim.com">Contact Support</a>
+              <a href="https://valueaim.com" class="footer-link">Website</a>
+              <a href="mailto:info@valueaim.com" class="footer-link">Support</a>
             </div>
           </div>
         </div>
@@ -470,269 +531,310 @@ export const sendContactNotification = async (contactData) => {
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6; 
-            color: #333;
-            background: #f5f7fa;
-            padding: 20px;
+            background: #f6f8fa;
+            margin: 0;
+            padding: 0;
           }
-          .email-wrapper { 
-            max-width: 650px; 
-            margin: 0 auto; 
+          .email-container { 
+            max-width: 600px; 
+            margin: 40px auto; 
             background: #ffffff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(32, 31, 71, 0.12);
+            border: 1px solid #e1e4e8;
           }
-          .header { 
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white; 
-            padding: 48px 40px;
+          .logo-header { 
+            padding: 32px 40px;
+            background: #ffffff;
+            border-bottom: 1px solid #e1e4e8;
             text-align: center;
           }
-          .header-icon {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
+          .logo-img {
+            height: 60px;
+            width: auto;
           }
-          .header h1 { 
-            font-size: 28px; 
+          .logo-title {
+            font-size: 24px;
             font-weight: 700;
-            margin: 0;
+            color: #201F47;
             letter-spacing: -0.5px;
           }
-          .header p {
-            margin: 12px 0 0 0;
-            opacity: 0.9;
-            font-size: 15px;
+          .hero-section {
+            padding: 40px 40px 32px 40px;
+            background: #ffffff;
           }
-          .content { 
-            padding: 40px;
-          }
-          .priority-badge {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+          .notification-badge {
             display: inline-block;
-            font-size: 12px;
+            background: #10b981;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 20px;
+          }
+          .hero-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #24292e;
+            margin-bottom: 12px;
+            line-height: 1.3;
+          }
+          .hero-subtitle {
+            font-size: 15px;
+            color: #586069;
+            line-height: 1.5;
+          }
+          .content-section {
+            padding: 0 40px 32px 40px;
+            background: #ffffff;
+          }
+          .info-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 24px;
+          }
+          .info-row {
+            border-bottom: 1px solid #e1e4e8;
+          }
+          .info-row:last-child {
+            border-bottom: none;
+          }
+          .info-label {
+            padding: 16px 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #586069;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 24px;
+            width: 140px;
+            vertical-align: top;
           }
-          .contact-header {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-            border: 2px solid #6366f1;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin-bottom: 24px;
+          .info-value {
+            padding: 16px 0;
+            font-size: 15px;
+            color: #24292e;
+            line-height: 1.6;
           }
-          .contact-title {
-            color: #201F47;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 16px;
+          .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
           }
-          .contact-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-          }
-          .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-          }
-          .detail-icon {
-            width: 36px;
-            height: 36px;
-            background: white;
-            border-radius: 8px;
+          .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
           }
-          .detail-info {
+          .user-details {
             flex: 1;
           }
-          .detail-label {
-            font-size: 11px;
-            color: #4338ca;
+          .user-name {
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-          }
-          .detail-value {
-            color: #1e293b;
-            font-weight: 500;
-            font-size: 14px;
-          }
-          .message-section {
-            margin-top: 24px;
-          }
-          .section-label {
-            font-weight: 600;
-            color: #201F47;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-          }
-          .message-box {
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-left: 4px solid #10b981;
-            padding: 24px;
-            border-radius: 10px;
+            color: #24292e;
             font-size: 15px;
-            line-height: 1.8;
-            color: #374151;
-            white-space: pre-wrap;
-            min-height: 120px;
           }
-          .timestamp-box {
-            background: #fef3c7;
-            border: 1px solid #fbbf24;
-            padding: 12px 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 24px;
+          .user-email {
+            font-size: 14px;
+            color: #586069;
           }
-          .timestamp {
-            color: #92400e;
-            font-weight: 500;
-            font-size: 13px;
+          .contact-detail-item {
+            margin-bottom: 4px;
+            font-size: 15px;
+            color: #24292e;
           }
-          .action-button {
+          .contact-detail-label {
             display: inline-block;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            font-weight: 600;
+            color: #586069;
+            min-width: 60px;
+          }
+          .subject-box {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #0c4a6e;
+          }
+          .message-content {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: #24292e;
+            white-space: pre-wrap;
+            min-height: 100px;
+          }
+          .timestamp-text {
+            font-size: 14px;
+            color: #586069;
+          }
+          .action-bar {
+            margin-top: 32px;
+            padding: 20px;
+            background: #f6f8fa;
+            border-radius: 6px;
+            text-align: center;
+          }
+          .reply-button {
+            display: inline-block;
+            background: #201F47;
             color: white;
-            padding: 14px 32px;
-            border-radius: 8px;
+            padding: 12px 28px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 15px;
-            margin-top: 24px;
-            transition: all 0.3s ease;
+            font-size: 14px;
+            transition: all 0.2s ease;
           }
-          .footer { 
-            text-align: center;
+          .reply-button:hover {
+            background: #15143a;
+          }
+          .divider {
+            height: 1px;
+            background: #e1e4e8;
+            margin: 32px 0;
+          }
+          .footer {
             padding: 32px 40px;
-            background: #f8f9fa;
-            color: #6b7280;
+            background: #f6f8fa;
+            text-align: center;
+            border-top: 1px solid #e1e4e8;
+          }
+          .footer-text {
             font-size: 13px;
-            border-top: 1px solid #e5e7eb;
+            color: #586069;
+            line-height: 1.6;
+          }
+          .footer-brand {
+            font-weight: 600;
+            color: #201F47;
           }
           .footer-links {
             margin-top: 16px;
+            font-size: 13px;
           }
-          .footer-links a {
+          .footer-link {
             color: #201F47;
             text-decoration: none;
-            margin: 0 8px;
             font-weight: 500;
+            margin: 0 10px;
+          }
+          .footer-link:hover {
+            text-decoration: underline;
           }
           @media only screen and (max-width: 600px) {
-            .header { padding: 32px 24px; }
-            .content { padding: 24px; }
+            .email-container { margin: 20px auto; }
+            .logo-header { padding: 24px; }
+            .hero-section { padding: 32px 24px 24px 24px; }
+            .content-section { padding: 0 24px 24px 24px; }
             .footer { padding: 24px; }
-            .header h1 { font-size: 24px; }
-            .contact-details { grid-template-columns: 1fr; gap: 12px; }
+            .info-label { display: block; width: 100%; padding-bottom: 4px; }
+            .info-value { display: block; padding-top: 4px; }
+            .action-bar { padding: 16px; }
           }
         </style>
       </head>
       <body>
-        <div class="email-wrapper">
-          <div class="header">
-            <div class="header-icon">📧</div>
-            <h1>New Contact Inquiry!</h1>
-            <p>Someone wants to connect with you</p>
+        <div class="email-container">
+          <div class="logo-header">
+            <img src="https://value-aim-backend.onrender.com/uploads/valueaim-logo.png" alt="ValueAIM" class="logo-img" />
           </div>
           
-          <div class="content">
-            <div class="priority-badge">🔔 NEW MESSAGE</div>
-            
-            <div class="contact-header">
-              <div class="contact-title">
-                <span>📋</span> Contact Information
-              </div>
-              <div class="contact-details">
-                <div class="detail-item">
-                  <div class="detail-icon">👤</div>
-                  <div class="detail-info">
-                    <div class="detail-label">Full Name</div>
-                    <div class="detail-value">${firstName} ${lastName}</div>
+          <div class="hero-section">
+            <div class="notification-badge">Contact Request</div>
+            <h1 class="hero-title">New Contact Form Submission</h1>
+            <p class="hero-subtitle">Someone has reached out through your contact form</p>
+          </div>
+          
+          <div class="content-section">
+            <table class="info-table">
+              <tr class="info-row">
+                <td class="info-label">From</td>
+                <td class="info-value">
+                  <div class="user-info">
+                    <div class="user-avatar">${firstName.charAt(0).toUpperCase()}</div>
+                    <div class="user-details">
+                      <div class="user-name">${firstName} ${lastName}</div>
+                      <div class="user-email">${email}</div>
+                    </div>
                   </div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-icon">📧</div>
-                  <div class="detail-info">
-                    <div class="detail-label">Email</div>
-                    <div class="detail-value">${email}</div>
+                </td>
+              </tr>
+              
+              <tr class="info-row">
+                <td class="info-label">Contact Info</td>
+                <td class="info-value">
+                  <div class="contact-detail-item">
+                    <span class="contact-detail-label">Email:</span> ${email}
                   </div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-icon">📱</div>
-                  <div class="detail-info">
-                    <div class="detail-label">Phone</div>
-                    <div class="detail-value">${phoneNumber}</div>
+                  <div class="contact-detail-item">
+                    <span class="contact-detail-label">Phone:</span> ${phoneNumber}
                   </div>
-                </div>
-                <div class="detail-item">
-                  <div class="detail-icon">📌</div>
-                  <div class="detail-info">
-                    <div class="detail-label">Subject</div>
-                    <div class="detail-value">${subject}</div>
+                </td>
+              </tr>
+              
+              <tr class="info-row">
+                <td class="info-label">Subject</td>
+                <td class="info-value">
+                  <div class="subject-box">${subject}</div>
+                </td>
+              </tr>
+              
+              <tr class="info-row">
+                <td class="info-label">Message</td>
+                <td class="info-value">
+                  <div class="message-content">${message}</div>
+                </td>
+              </tr>
+              
+              <tr class="info-row">
+                <td class="info-label">Date & Time</td>
+                <td class="info-value">
+                  <div class="timestamp-text">
+                    ${new Date().toLocaleString('en-US', { 
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      timeZoneName: 'short'
+                    })}
                   </div>
-                </div>
-              </div>
-            </div>
+                </td>
+              </tr>
+            </table>
             
-            <div class="message-section">
-              <div class="section-label">
-                <span>💬</span> MESSAGE
-              </div>
-              <div class="message-box">${message}</div>
-            </div>
-            
-            <div class="timestamp-box">
-              <div class="timestamp">⏰ Received: ${new Date().toLocaleString('en-US', { 
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZoneName: 'short'
-              })}</div>
-            </div>
-            
-            <div style="text-align: center;">
-              <a href="mailto:${email}" class="action-button">
-                ↩️ Reply to ${firstName}
+            <div class="action-bar">
+              <a href="mailto:${email}?subject=Re: ${encodeURIComponent(subject)}" class="reply-button">
+                Reply to ${firstName}
               </a>
             </div>
           </div>
           
           <div class="footer">
-            <p><strong>ValueAIM</strong> - Amplifying Customer Intelligence</p>
-            <p style="margin-top: 8px; font-size: 12px;">This is an automated notification from your ValueAIM platform</p>
+            <p class="footer-text">
+              <span class="footer-brand">ValueAIM</span> — Amplifying Customer Intelligence
+            </p>
+            <p class="footer-text" style="margin-top: 8px; font-size: 12px; color: #959da5;">
+              This is an automated notification from your ValueAIM platform
+            </p>
             <div class="footer-links">
-              <a href="https://valueaim.com">Visit Website</a> •
-              <a href="mailto:info@valueaim.com">Contact Support</a>
+              <a href="https://valueaim.com" class="footer-link">Website</a>
+              <a href="mailto:info@valueaim.com" class="footer-link">Support</a>
             </div>
           </div>
         </div>

@@ -62,12 +62,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/company', companyRoutes);
-app.use('/service', serviceRoutes);
-app.use('/user', userRoutes);
-app.use('/suggestions', suggestionRoutes);
-app.use('/contact', contactRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/company', companyRoutes);
+app.use('/api/service', serviceRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/suggestions', suggestionRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
